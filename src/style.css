@@ -24,31 +24,46 @@ main {
 main {
   width: 70vw;
   margin-inline: auto;
-  margin-top: 5rem;
+  margin-top: 3rem;
   padding: 2rem;
 }
 
 main section {
-  border: 1px solid gray;
-  /* padding: 1rem; */
+  border: 1px solid lightgray;
 }
 
 main section .heading {
-  /* margin-bottom: 1rem; */
   position: relative;
   cursor: pointer;
-  padding: 1rem;
   transition: background-color 0.3s ease-in;
 }
 
-main section .heading:hover {
-  background-color: lightgray;
+main section .heading button {
+  background: none;
+  border: none;
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  text-align: start;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+main section .heading button:hover,
+.heading button:focus {
+  outline: 2px solid blue;
+  background-color: aquamarine;
+}
+
+main section.show button {
+  outline-color: lightcyan;
+  background-color: lightskyblue;
 }
 
 main section .heading::after {
   content: "^";
   position: absolute;
-  right: 0%;
+  right: 1rem;
   top: 50%;
   translate: 0% -50%;
   rotate: 180deg;
@@ -75,6 +90,6 @@ main section .content > div {
   line-height: 1.6;
 }
 
-main section:focus {
-  outline: 2px solid blue;
+main section .content p {
+  padding: 1rem;
 }

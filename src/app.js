@@ -26,11 +26,11 @@ class Accordion {
 
   createSection(title, content, index) {
     const section = document.createElement("section");
-    section.tabIndex = index === 0 ? 0 : -1;
-    section.setAttribute("data-index", index);
     section.innerHTML = `
-        <h3 class="heading">${title}</h3> 
-        <div class="content">
+        <h3 class="heading">
+          <button aria-expanded="false" tabindex="${index === 0 ? 0 : -1}" data-index="${index}">${title}</button>
+        </h3> 
+        <div class="content" role="region">
             <div><p>${content}</p></div>
         </div>
     `;
@@ -38,18 +38,23 @@ class Accordion {
     this.main.appendChild(section);
   }
 
-  toggleAccordion(ele) {
-    if (ele.classList.contains("show")) {
-      ele.classList.remove("show");
+  toggleAccordion(event) {
+    const section = event.target.parentElement.parentElement;
+    const button = event.target;
+    if (section.classList.contains("show")) {
+      section.classList.remove("show");
+      button.setAttribute("aria-expanded", "false");
     } else {
       this.closeAllAccordions();
 
-      ele.classList.add("show");
+      section.classList.add("show");
+      button.setAttribute("aria-expanded", "true");
+
     }
   }
 
-  setSectionTabIndex(nextNumber) {
-    document.querySelectorAll("section").forEach((section) => {
+  setButtonTabIndex(nextNumber) {
+    document.querySelectorAll("section button").forEach((section) => {
       section.tabIndex = -1;
       if (parseInt(section.dataset.index) === nextNumber) {
         section.tabIndex = 0;
@@ -58,31 +63,25 @@ class Accordion {
   }
 
   handleMainPress = (e) => {
+    console.log("Tab press");
     if (e.code === "Tab") {
       const nextNumber = parseInt(e.target.dataset.index) + 1;
-
-      this.setSectionTabIndex(
-        nextNumber < this.main.childElementCount ? nextNumber : 0
-      );
+      this.setButtonTabIndex(nextNumber < this.main.childElementCount ? nextNumber : 0);
     }
 
-    if (
-      e.target.localName === "section" &&
-      (e.code === "Enter" || e.code === "Space")
-    ) {
-      this.toggleAccordion(e.target);
+    if ((e.code === "Enter" || e.code === "Space") && e.target.localName === "button") {
+      e.preventDefault();
+      this.toggleAccordion(e);
     }
   };
 
   handleMainClick = (e) => {
-    if (e.target.parentElement.localName === "section") {
-      this.toggleAccordion(e.target.parentElement);
-    }
-
-    if (e.target.localName === "section") {
-      this.toggleAccordion(e.target);
+    if (e.target.localName === "button") {
+      e.stopImmediatePropagation();
+      this.toggleAccordion(e);
     }
   };
+
 }
 
 const accordion = new Accordion();
