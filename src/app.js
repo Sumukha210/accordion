@@ -43,31 +43,6 @@ class Accordion extends Section {
     }
   }
 
-  closeAllAccordions() {
-    const buttons = document.querySelectorAll("button");
-    buttons.forEach((button) => button.setAttribute("aria-expanded", "false"));
-  }
-
-  toggleAccordion(event) {
-    const button = event.target;
-
-    if (button.getAttribute("aria-expanded") === "true") {
-      button.setAttribute("aria-expanded", "false");
-    } else {
-      this.closeAllAccordions();
-      button.setAttribute("aria-expanded", "true");
-    }
-  }
-
-  setButtonTabIndex(nextNumber) {
-    document.querySelectorAll("section button").forEach((section) => {
-      section.tabIndex = -1;
-      if (parseInt(section.dataset.index) === nextNumber) {
-        section.tabIndex = 0;
-      }
-    });
-  }
-
   handleMainPress = (e) => {
     if (e.code === "Tab") {
       const nextNumber = parseInt(e.target.dataset.index) + 1;
@@ -86,6 +61,32 @@ class Accordion extends Section {
       this.toggleAccordion(e);
     }
   };
+
+  closeAllAccordions() {
+    const buttons = document.querySelectorAll("button");
+    buttons.forEach((button) => button.setAttribute("aria-expanded", "false"));
+  }
+
+  setButtonTabIndex(nextNumber) {
+    document.querySelectorAll("section button").forEach((section) => {
+      section.tabIndex = -1;
+      if (parseInt(section.dataset.index) === nextNumber) {
+        section.tabIndex = 0;
+      }
+    });
+  }
+
+  toggleAccordion(event) {
+    const button = event.target;
+
+    if (button.getAttribute("aria-expanded") === "true") {
+      button.setAttribute("aria-expanded", "false");
+    } else {
+      this.closeAllAccordions();
+      button.setAttribute("aria-expanded", "true");
+    }
+  }
+
 
 }
 
