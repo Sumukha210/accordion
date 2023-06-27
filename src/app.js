@@ -19,7 +19,6 @@ class Section {
 }
 
 
-
 class Accordion extends Section {
   constructor() {
     const main = document.querySelector("main");
@@ -86,8 +85,6 @@ class Accordion extends Section {
       button.setAttribute("aria-expanded", "true");
     }
   }
-
-
 }
 
 const accordion = new Accordion();
