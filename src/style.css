@@ -55,10 +55,10 @@ main section .heading button:hover,
   background-color: aquamarine;
 }
 
-main section.show button {
+/* main section.show button {
   outline-color: lightcyan;
   background-color: lightskyblue;
-}
+} */
 
 main section .heading::after {
   content: "^";
@@ -77,11 +77,16 @@ main section .content {
   transition: grid-template-rows 0.6s;
 }
 
-main section.show .content {
+main section:has(button[aria-expanded="true"]) button {
+  outline-color: lightcyan;
+  background-color: lightskyblue;
+}
+
+main section:has(button[aria-expanded="true"]) .content {
   grid-template-rows: 1fr;
 }
 
-main section.show .heading::after {
+main section:has(button[aria-expanded="true"]) .heading::after {
   rotate: 0deg;
 }
 

@@ -1,27 +1,6 @@
-class Accordion {
-  constructor() {
-    this.getData();
-
-    this.main = document.querySelector("main");
-    this.main.addEventListener("click", this.handleMainClick);
-    this.main.addEventListener("keydown", this.handleMainPress);
-  }
-
-  async getData() {
-    try {
-      const data = await fetch("./data.json");
-      const posts = await data.json();
-      posts.forEach((post, index) => {
-        this.createSection(post.title, post.content, index);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  closeAllAccordions() {
-    const sections = document.querySelectorAll("section");
-    sections.forEach((section) => section.classList.remove("show"));
+class Section {
+  constructor(main) {
+    this.main = main;
   }
 
   createSection(title, content, index) {
@@ -37,19 +16,46 @@ class Accordion {
 
     this.main.appendChild(section);
   }
+}
+
+
+
+class Accordion extends Section {
+  constructor() {
+    const main = document.querySelector("main");
+    super(main);
+
+    this.main.addEventListener("click", this.handleMainClick);
+    this.main.addEventListener("keydown", this.handleMainPress);
+    this.getData();
+
+  }
+
+  async getData() {
+    try {
+      const data = await fetch("./data.json");
+      const posts = await data.json();
+      posts.forEach((post, index) => {
+        this.createSection(post.title, post.content, index);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  closeAllAccordions() {
+    const buttons = document.querySelectorAll("button");
+    buttons.forEach((button) => button.setAttribute("aria-expanded", "false"));
+  }
 
   toggleAccordion(event) {
-    const section = event.target.parentElement.parentElement;
     const button = event.target;
-    if (section.classList.contains("show")) {
-      section.classList.remove("show");
+
+    if (button.getAttribute("aria-expanded") === "true") {
       button.setAttribute("aria-expanded", "false");
     } else {
       this.closeAllAccordions();
-
-      section.classList.add("show");
       button.setAttribute("aria-expanded", "true");
-
     }
   }
 
@@ -63,7 +69,6 @@ class Accordion {
   }
 
   handleMainPress = (e) => {
-    console.log("Tab press");
     if (e.code === "Tab") {
       const nextNumber = parseInt(e.target.dataset.index) + 1;
       this.setButtonTabIndex(nextNumber < this.main.childElementCount ? nextNumber : 0);
